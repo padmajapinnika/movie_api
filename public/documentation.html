@@ -3,17 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie API Documentation</title>
+    <title>API Documentation</title>
 </head>
 <body>
-    <h1>Movie API Documentation</h1>
-    <p>Welcome to the Movie API! This API allows users to access a collection of movies, retrieve details about specific movies, genres, directors, and more.</p>
-    <p>Developers can use this API to integrate movie-related data into their applications. It supports various endpoints for fetching movie information, user authentication, and more.</p>
-    
-    <h2>Getting Started</h2>
-    <p>To use this API, you need to make HTTP requests to the available endpoints. The API supports both JSON responses and user authentication.</p>
-    
-    <h2>Endpoints</h2>
-    <p>More details about API endpoints and how to use them will be added soon.</p>
+    <h1>API Documentation</h1>
+
+    <h2>1. Create a New User</h2>
+    <p><strong>Description:</strong> This endpoint creates a new user and adds them to the list of users.</p>
+    <p><strong>Endpoint:</strong> <code>/users</code></p>
+    <p><strong>Method:</strong> POST</p>
+    <p><strong>Request Body:</strong> The body should contain the user's name.</p>
+    <pre>
+    {
+        "name": "john"
+    }
+    </pre>
+    <p><strong>Response:</strong> Returns the newly created user object.</p>
+    <pre>
+    {
+        "id": "uuid",
+        "name": "john",
+        "favoriteMovies": []
+    }
+    </pre>
+
+    <h2>2. Update an Existing User</h2>
+    <p><strong>Description:</strong> This endpoint allows you to update a user's information by their ID.</p>
+    <p><strong>Endpoint:</strong> <code>/users/:id</code></p>
+    <p><strong>Method:</strong> PUT</p>
+    <p><strong>Query Parameters:</strong> <code>:id</code> (The ID of the user to update)</p>
+    <p><strong>Request Body:</strong> The body should contain the updated user's name.</p>
+    <pre>
+    {
+        "name": "john doe"
+    }
+    </pre>
+    <p><strong>Response:</strong> Returns the updated user object.</p>
+    <pre>
+    {
+        "id": "uuid",
+        "name": "john doe",
+        "favoriteMovies": []
+    }
+    </pre>
+
+    <h2>3. Add a Movie to User's Favorites</h2>
+    <p><strong>Description:</strong> This endpoint adds a movie to the specified user's favorite movies.</p>
+    <p><strong>Endpoint:</strong> <code>/users/:id/:movieTitle</code></p>
+    <p><strong>Method:</strong> POST</p>
+    <p><strong>Query Parameters:</strong> <code>:id</code> (User ID), <code>:movieTitle</code> (Title of the movie to add)</p>
+    <p><strong>Response:</strong> Returns a success message.</p>
+    <pre>
+    "Inception has been added to user 1's array"
+    </pre>
+
+    <h2>4. Remove a Movie from User's Favorites</h2>
+    <p><strong>Description:</strong> This endpoint removes a movie from the specified user's favorite movies.</p>
+    <p><strong>Endpoint:</strong> <code>/users/:id/:movieTitle</code></p>
+    <p><strong>Method:</strong> DELETE</p>
+    <p><strong>Query Parameters:</strong> <code>:id</code> (User ID), <code>:movieTitle</code> (Title of the movie to remove)</p>
+    <p><strong>Response:</strong> Returns a success message.</p>
+    <pre>
+    "Inception has been removed from user 1's array"
+    </pre>
+
+    <h2>5. Delete a User</h2>
+    <p><strong>Description:</strong> This endpoint deletes a user by their ID.</p>
+    <p><strong>Endpoint:</strong> <code>/users/:id</code></p>
+    <p><strong>Method:</strong> DELETE</p>
+    <p><strong>Query Parameters:</strong> <code>:id</code> (User ID)</p>
+    <p><strong>Response:</strong> Returns a success message.</p>
+    <pre>
+    "User 1 has been deleted"
+    </pre>
+
+    <h2>6. Get All Movies</h2>
+    <p><strong>Description:</strong> This endpoint returns a list of all available movies.</p>
+    <p><strong>Endpoint:</strong> <code>/movies</code></p>
+    <p><strong>Method:</strong> GET</p>
+    <p><strong>Response:</strong> Returns an array of all movies.</p>
+    <pre>
+    [
+        {
+            "Title": "Inception",
+            "Description": "A thief who enters the dreams of others to steal secrets.",
+            "Genre": "Sci-Fi",
+            "GenreDescription": "A genre that explores futuristic concepts.",
+            "Director": {
+                "Name": "Christopher Nolan",
+                "Bio": "British-American filmmaker.",
+                "BirthYear": 1970,
+                "DeathYear": null
+            },
+            "ImageURL": "https://image-url.com/inception.jpg",
+            "IsFeatured": true
+        }
+    ]
+    </pre>
+
+    <h2>7. Get a Movie by Title</h2>
+    <p><strong>Description:</strong> This endpoint returns a specific movie by its title.</p>
+    <p><strong>Endpoint:</strong> <code>/movies/:title</code></p>
+    <p><strong>Method:</strong> GET</p>
+    <p><strong>Query Parameters:</strong> <code>:title</code> (Title of the movie)</p>
+    <p><strong>Response:</strong> Returns the movie object if found.</p>
+    <pre>
+    {
+        "Title": "Inception",
+        "Description": "A thief who enters the dreams of others to steal secrets.",
+        "Genre": "Sci-Fi",
+        "GenreDescription": "A genre that explores futuristic concepts.",
+        "Director": {
+            "Name": "Christopher Nolan",
+            "Bio": "British-American filmmaker.",
+            "BirthYear": 1970,
+            "DeathYear": null
+        },
+        "ImageURL": "https://image-url.com/inception.jpg",
+        "IsFeatured": true
+    }
+    </pre>
+
+    <h2>8. Get Movies by Genre</h2>
+    <p><strong>Description:</strong> This endpoint returns all movies of a specific genre.</p>
+    <p><strong>Endpoint:</strong> <code>/movies/genre/:genreName</code></p>
+    <p><strong>Method:</strong> GET</p>
+    <p><strong>Query Parameters:</strong> <code>:genreName</code> (The genre name)</p>
+    <p><strong>Response:</strong> Returns a list of movies matching the genre.</p>
+    <pre>
+    [
+        {
+            "Title": "Inception",
+            "Description": "A thief who enters the dreams of others to steal secrets.",
+            "Genre": "Sci-Fi",
+            "GenreDescription": "A genre that explores futuristic concepts.",
+            "Director": {
+                "Name": "Christopher Nolan",
+                "Bio": "British-American filmmaker.",
+                "BirthYear": 1970,
+                "DeathYear": null
+            },
+            "ImageURL": "https://image-url.com/inception.jpg",
+            "IsFeatured": true
+        }
+    ]
+    </pre>
+
+    <h2>9. Get Movies by Director</h2>
+    <p><strong>Description:</strong> This endpoint returns all movies by a specific director.</p>
+    <p><strong>Endpoint:</strong> <code>/movies/director/:directorName</code></p>
+    <p><strong>Method:</strong> GET</p>
+    <p><strong>Query Parameters:</strong> <code>:directorName</code> (The director's name)</p>
+    <p><strong>Response:</strong> Returns a list of movies directed by the specified director.</p>
+    <pre>
+    [
+        {
+            "Title": "Inception",
+            "Description": "A thief who enters the dreams of others to steal secrets.",
+            "Genre": "Sci-Fi",
+            "GenreDescription": "A genre that explores futuristic concepts.",
+            "Director": {
+                "Name": "Christopher Nolan",
+                "Bio": "British-American filmmaker.",
+                "BirthYear": 1970,
+                "DeathYear": null
+            },
+            "ImageURL": "https://image-url.com/inception.jpg",
+            "IsFeatured": true
+        }
+    ]
+    </pre>
+
 </body>
 </html>
