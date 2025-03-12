@@ -4,175 +4,242 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #3623a3;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #e0e0e0;
+            padding: 5px;
+        }
+        .route-section {
+            margin-bottom: 20px;
+        }
+        .route-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .response-example {
+            color: #007BFF;
+        }
+    </style>
 </head>
 <body>
-    <h1>API Documentation</h1>
+<h1>API Documentation</h1>
+<p>Welcome to the API documentation! This guide explains how to interact with the MyFlix app's API. It covers all available routes for managing users, movies, and more.</p>
 
-    <h2>1. Create a New User</h2>
-    <p><strong>Description:</strong> This endpoint creates a new user and adds them to the list of users.</p>
-    <p><strong>Endpoint:</strong> <code>/users</code></p>
+<!-- Route: GET /movies -->
+<div class="route-section">
+    <h2>1. GET /movies</h2>
+    <p><strong>Description:</strong> Retrieves a list of all movies in the database.</p>
+    <p><strong>Method:</strong> GET</p>
+    <p><strong>Response Example:</strong></p>
+    <pre>
+[
+{
+"_id": "12345",
+"Title": "Inception",
+"Genre": "Sci-Fi",
+"Director": "Christopher Nolan",
+"Year": 2010,
+"Description": "A mind-bending thriller about dreams.",
+"Rating": 8.8
+},
+{
+"_id": "12346",
+"Title": "The Matrix",
+"Genre": "Action",
+"Director": "The Wachowskis",
+"Year": 1999,
+"Description": "A computer hacker learns the truth about his reality.",
+"Rating": 8.7
+}
+]
+    </pre>
+</div>
+
+<!-- Route: GET /users -->
+<div class="route-section">
+    <h2>2. GET /users</h2>
+    <p><strong>Description:</strong> Retrieves a list of all users in the database.</p>
+    <p><strong>Method:</strong> GET</p>
+    <p><strong>Response Example:</strong></p>
+    <pre>
+[
+{
+"_id": "abc123",
+"Username": "Amrutha",
+"Email": "Amrutha@gmail.com",
+"Birthday": "1990-07-09",
+"FavoriteMovies": ["12345", "12346"]
+}
+]
+    </pre>
+</div>
+
+<!-- Route: GET /movies/:title -->
+<div class="route-section">
+    <h2>3. GET /movies/:title</h2>
+    <p><strong>Description:</strong> Retrieves a movie by its title.</p>
+    <p><strong>Method:</strong> GET</p>
+    <p><strong>Request Example:</strong></p>
+    <pre>GET /movies/Inception</pre>
+    <p><strong>Response Example:</strong></p>
+    <pre>
+{
+"_id": "12345",
+"Title": "Inception",
+"Genre": "Sci-Fi",
+"Director": "Christopher Nolan",
+"Year": 2010,
+"Description": "A mind-bending thriller about dreams.",
+"Rating": 8.8
+}
+    </pre>
+</div>
+
+<!-- Route: GET /genre/:name -->
+<div class="route-section">
+    <h2>4. GET /genre/:name</h2>
+    <p><strong>Description:</strong> Retrieves a genre by name and its description.</p>
+    <p><strong>Method:</strong> GET</p>
+    <p><strong>Request Example:</strong></p>
+    <pre>GET /genre/Sci-Fi</pre>
+    <p><strong>Response Example:</strong></p>
+    <pre>
+{
+"Genre": "Sci-Fi",
+"Description": "Science fiction films explore speculative concepts such as futuristic technology, time travel, and space exploration."
+}
+    </pre>
+</div>
+
+<!-- Route: GET /director/:name -->
+<div class="route-section">
+    <h2>5. GET /director/:name</h2>
+    <p><strong>Description:</strong> Retrieves director details by their name.</p>
+    <p><strong>Method:</strong> GET</p>
+    <p><strong>Request Example:</strong></p>
+    <pre>GET /director/Christopher%20Nolan</pre>
+    <p><strong>Response Example:</strong></p>
+    <pre>
+{
+"Director": "Christopher Nolan",
+"Bio": "Christopher Nolan is a British-American filmmaker known for his complex storytelling.",
+"BirthYear": 1970,
+"DeathYear": "N/A"
+}
+    </pre>
+</div>
+
+<!-- Route: POST /users -->
+<div class="route-section">
+    <h2>6. POST /users</h2>
+    <p><strong>Description:</strong> Creates a new user in the database.</p>
     <p><strong>Method:</strong> POST</p>
-    <p><strong>Request Body:</strong> The body should contain the user's name.</p>
+    <p><strong>Request Body:</strong></p>
     <pre>
-    {
-        "name": "john"
-    }
+{
+"Username": "Amrutha",
+"password": "12345",
+"email": "Amrutha@gmail.com",
+"Birthday": "1990-07-09"
+}
     </pre>
-    <p><strong>Response:</strong> Returns the newly created user object.</p>
+    <p><strong>Response Example:</strong></p>
     <pre>
-    {
-        "id": "uuid",
-        "name": "john",
-        "favoriteMovies": []
-    }
+{
+"_id": "abc123",
+"Username": "Amrutha",
+"Email": "Amrutha@gmail.com",
+"Birthday": "1990-07-09",
+"FavoriteMovies": []
+}
     </pre>
+</div>
 
-    <h2>2. Update an Existing User</h2>
-    <p><strong>Description:</strong> This endpoint allows you to update a user's information by their ID.</p>
-    <p><strong>Endpoint:</strong> <code>/users/:id</code></p>
+<!-- Route: PUT /users/:Username -->
+<div class="route-section">
+    <h2>7. PUT /users/:Username</h2>
+    <p><strong>Description:</strong> Updates the user's information.</p>
     <p><strong>Method:</strong> PUT</p>
-    <p><strong>Query Parameters:</strong> <code>:id</code> (The ID of the user to update)</p>
-    <p><strong>Request Body:</strong> The body should contain the updated user's name.</p>
+    <p><strong>Request Body:</strong></p>
     <pre>
-    {
-        "name": "john doe"
-    }
+{
+"Username": "Amrutha",
+"password": "newpassword123",
+"email": "newemail@gmail.com",
+"Birthday": "1990-07-09"
+}
     </pre>
-    <p><strong>Response:</strong> Returns the updated user object.</p>
+    <p><strong>Response Example:</strong></p>
     <pre>
-    {
-        "id": "uuid",
-        "name": "john doe",
-        "favoriteMovies": []
-    }
+{
+"_id": "abc123",
+"Username": "Amrutha",
+"Email": "newemail@gmail.com",
+"Birthday": "1990-07-09",
+"FavoriteMovies": ["12345"]
+}
     </pre>
+</div>
 
-    <h2>3. Add a Movie to User's Favorites</h2>
-    <p><strong>Description:</strong> This endpoint adds a movie to the specified user's favorite movies.</p>
-    <p><strong>Endpoint:</strong> <code>/users/:id/:movieTitle</code></p>
+<!-- Route: POST /users/:Username/movies/:MovieID -->
+<div class="route-section">
+    <h2>8. POST /users/:Username/movies/:MovieID</h2>
+    <p><strong>Description:</strong> Adds a movie to a user's list of favorite movies.</p>
     <p><strong>Method:</strong> POST</p>
-    <p><strong>Query Parameters:</strong> <code>:id</code> (User ID), <code>:movieTitle</code> (Title of the movie to add)</p>
-    <p><strong>Response:</strong> Returns a success message.</p>
+    <p><strong>Request Example:</strong></p>
+    <pre>POST /users/Amrutha/movies/12345</pre>
+    <p><strong>Response Example:</strong></p>
     <pre>
-    "Inception has been added to user 1's array"
+{
+"_id": "abc123",
+"Username": "Amrutha",
+"FavoriteMovies": ["12345"]
+}
     </pre>
+</div>
 
-    <h2>4. Remove a Movie from User's Favorites</h2>
-    <p><strong>Description:</strong> This endpoint removes a movie from the specified user's favorite movies.</p>
-    <p><strong>Endpoint:</strong> <code>/users/:id/:movieTitle</code></p>
+<!-- Route: DELETE /users/:Username/movies/:MovieID -->
+<div class="route-section">
+    <h2>9. DELETE /users/:Username/movies/:MovieID</h2>
+    <p><strong>Description:</strong> Removes a movie from the user's favorite movies list.</p>
     <p><strong>Method:</strong> DELETE</p>
-    <p><strong>Query Parameters:</strong> <code>:id</code> (User ID), <code>:movieTitle</code> (Title of the movie to remove)</p>
-    <p><strong>Response:</strong> Returns a success message.</p>
+    <p><strong>Request Example:</strong></p>
+    <pre>DELETE /users/Amrutha/movies/12345</pre>
+    <p><strong>Response Example:</strong></p>
     <pre>
-    "Inception has been removed from user 1's array"
+{
+"_id": "abc123",
+"Username": "Amrutha",
+"FavoriteMovies": []
+}
     </pre>
+</div>
 
-    <h2>5. Delete a User</h2>
-    <p><strong>Description:</strong> This endpoint deletes a user by their ID.</p>
-    <p><strong>Endpoint:</strong> <code>/users/:id</code></p>
+<!-- Route: DELETE /users/:Username -->
+<div class="route-section">
+    <h2>10. DELETE /users/:Username</h2>
+    <p><strong>Description:</strong> Deletes a user from the database.</p>
     <p><strong>Method:</strong> DELETE</p>
-    <p><strong>Query Parameters:</strong> <code>:id</code> (User ID)</p>
-    <p><strong>Response:</strong> Returns a success message.</p>
+    <p><strong>Request Example:</strong></p>
+    <pre>DELETE /users/Amrutha</pre>
+    <p><strong>Response Example:</strong></p>
     <pre>
-    "User 1 has been deleted"
+{
+"message": "User deregistered successfully"
+}
     </pre>
-
-    <h2>6. Get All Movies</h2>
-    <p><strong>Description:</strong> This endpoint returns a list of all available movies.</p>
-    <p><strong>Endpoint:</strong> <code>/movies</code></p>
-    <p><strong>Method:</strong> GET</p>
-    <p><strong>Response:</strong> Returns an array of all movies.</p>
-    <pre>
-    [
-        {
-            "Title": "Inception",
-            "Description": "A thief who enters the dreams of others to steal secrets.",
-            "Genre": "Sci-Fi",
-            "GenreDescription": "A genre that explores futuristic concepts.",
-            "Director": {
-                "Name": "Christopher Nolan",
-                "Bio": "British-American filmmaker.",
-                "BirthYear": 1970,
-                "DeathYear": null
-            },
-            "ImageURL": "https://image-url.com/inception.jpg",
-            "IsFeatured": true
-        }
-    ]
-    </pre>
-
-    <h2>7. Get a Movie by Title</h2>
-    <p><strong>Description:</strong> This endpoint returns a specific movie by its title.</p>
-    <p><strong>Endpoint:</strong> <code>/movies/:title</code></p>
-    <p><strong>Method:</strong> GET</p>
-    <p><strong>Query Parameters:</strong> <code>:title</code> (Title of the movie)</p>
-    <p><strong>Response:</strong> Returns the movie object if found.</p>
-    <pre>
-    {
-        "Title": "Inception",
-        "Description": "A thief who enters the dreams of others to steal secrets.",
-        "Genre": "Sci-Fi",
-        "GenreDescription": "A genre that explores futuristic concepts.",
-        "Director": {
-            "Name": "Christopher Nolan",
-            "Bio": "British-American filmmaker.",
-            "BirthYear": 1970,
-            "DeathYear": null
-        },
-        "ImageURL": "https://image-url.com/inception.jpg",
-        "IsFeatured": true
-    }
-    </pre>
-
-    <h2>8. Get Movies by Genre</h2>
-    <p><strong>Description:</strong> This endpoint returns all movies of a specific genre.</p>
-    <p><strong>Endpoint:</strong> <code>/movies/genre/:genreName</code></p>
-    <p><strong>Method:</strong> GET</p>
-    <p><strong>Query Parameters:</strong> <code>:genreName</code> (The genre name)</p>
-    <p><strong>Response:</strong> Returns a list of movies matching the genre.</p>
-    <pre>
-    [
-        {
-            "Title": "Inception",
-            "Description": "A thief who enters the dreams of others to steal secrets.",
-            "Genre": "Sci-Fi",
-            "GenreDescription": "A genre that explores futuristic concepts.",
-            "Director": {
-                "Name": "Christopher Nolan",
-                "Bio": "British-American filmmaker.",
-                "BirthYear": 1970,
-                "DeathYear": null
-            },
-            "ImageURL": "https://image-url.com/inception.jpg",
-            "IsFeatured": true
-        }
-    ]
-    </pre>
-
-    <h2>9. Get Movies by Director</h2>
-    <p><strong>Description:</strong> This endpoint returns all movies by a specific director.</p>
-    <p><strong>Endpoint:</strong> <code>/movies/director/:directorName</code></p>
-    <p><strong>Method:</strong> GET</p>
-    <p><strong>Query Parameters:</strong> <code>:directorName</code> (The director's name)</p>
-    <p><strong>Response:</strong> Returns a list of movies directed by the specified director.</p>
-    <pre>
-    [
-        {
-            "Title": "Inception",
-            "Description": "A thief who enters the dreams of others to steal secrets.",
-            "Genre": "Sci-Fi",
-            "GenreDescription": "A genre that explores futuristic concepts.",
-            "Director": {
-                "Name": "Christopher Nolan",
-                "Bio": "British-American filmmaker.",
-                "BirthYear": 1970,
-                "DeathYear": null
-            },
-            "ImageURL": "https://image-url.com/inception.jpg",
-            "IsFeatured": true
-        }
-    ]
-    </pre>
-
+</div>
 </body>
 </html>
