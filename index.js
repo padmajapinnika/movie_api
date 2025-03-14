@@ -16,13 +16,18 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+let auth = require('./auth')(app);
+const passport=require('passport')
+require('./passport');
+
+
 //default text response when at /
 app.get("/",(req,res)=>{
     res.send("welocome to MyFlix!")
 });
 //return movies in json format
-app.get("/movies",(req,res)=>{
-    Movies.find()
+app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
+   await  Movies.find()
     .then((movies)=>{
         res.status(201).json(movies);
     })
@@ -32,7 +37,7 @@ app.get("/movies",(req,res)=>{
 });
 });
 ////return users in json format
-app.get("/users",function(req,res){
+app.get("/users",passport.authenticate('jwt', { session: false }),function(req,res){
     Users.find()
     .then(function(users){
         res.status(201).json(users);
@@ -43,7 +48,7 @@ app.get("/users",function(req,res){
     });
 });
 
-app.get("/movies/:title", (req, res) => {
+app.get("/movies/:title", passport.authenticate('jwt', { session: false }),(req, res) => {
     Movies.findOne({ Title:req.params.Title })
         .then((movie) => {
             if (!movie) {
@@ -57,7 +62,7 @@ app.get("/movies/:title", (req, res) => {
         });
 });
 
-app.get("/genre/:name", (req, res) => {
+app.get("/genre/:name",  passport.authenticate('jwt', { session: false }),(req, res) => {
 
     // Search for a movie with the given genre name inside the genre field of the Movie model
     Movies.findOne({ "genre.name": req.params.name })
@@ -74,9 +79,9 @@ app.get("/genre/:name", (req, res) => {
         });
 });
 
-app.get("/director/:name", (req, res) => {
+app.get("/director/:name", passport.authenticate('jwt', { session: false }), (req, res) => {
     // Search for a movie with the given director name inside the director field of the Movie model
-    Movies.findOne({ "director.name": req.params.name })  // Correct query field name
+    Movies.findOne({ "director.name": req.params.name })   // Correct query field name
         .then((movie) => {
             // Return the director's bio, birth year, and death year
             res.json({
@@ -114,9 +119,11 @@ Users.create({
         }
     });
 });
-app.put("/users/:Username", (req, res) => {
-    Users.findOneAndUpdate(
-        { Username: req.params.Username },
+app.put("/users/:Username", passport.authenticate('jwt', { session: false }), async (req, res) => {
+    if(req.user.Username !== req.params.Username){
+        return res.status(400).send('Permission denied');
+    }
+    await Users.findOneAndUpdate({Username: req.params.Username },
         {
             $set: {
                 Username: req.body.Username,
@@ -135,7 +142,7 @@ app.put("/users/:Username", (req, res) => {
         res.status(500).send("Error: " + err);
     });   
 });
-app.post("/users/:Username/movies/:MovieID", (req, res) => {
+app.post("/users/:Username/movies/:MovieID",  passport.authenticate('jwt', { session: false }),(req, res) => {
     Users.findOneAndUpdate(
         { Username: req.params.Username }, // Find user by Username
         { $addToSet: { favoriteMovies: req.params.MovieID } }, // Add movie ID to the array
@@ -149,7 +156,7 @@ app.post("/users/:Username/movies/:MovieID", (req, res) => {
         res.status(500).send("Error: " + err);
     });
 });
-app.delete("/users/:Username/movies/:MovieID", (req, res) => {
+app.delete("/users/:Username/movies/:MovieID",  passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOneAndUpdate(
         { Username: req.params.Username }, // Find user by Username
         { $pull: { favoriteMovies: req.params.MovieID } }, // Remove movie ID from the FavoriteMovies array
@@ -166,7 +173,7 @@ app.delete("/users/:Username/movies/:MovieID", (req, res) => {
         res.status(500).send("Error: " + err);
     });
 });
-app.delete("/users/:Username", (req, res) => {
+app.delete("/users/:Username", passport.authenticate('jwt', { session: false }), (req, res) => {
     const { Username } = req.params;
 
     Users.findOneAndDelete({ Username: Username })  // Find the user by Username and delete them
