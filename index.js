@@ -1,9 +1,11 @@
 // Import necessary modules
 const express = require('express');
-const uuid = require('uuid');
+const morgan = require("morgan");
 const mongoose = require('mongoose');
-
+const uuid = require('uuid');
 const Models = require('./models.js');
+const passport=require('passport');
+const cors = require('cors');
 const { check, validationResult } = require('express-validator');
 
 const Movies = Models.Movie;
@@ -11,21 +13,18 @@ const Users = Models.User;
 const Genres=Models.Genre;
 const Directors=Models.Director;
 
-//mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-
-
 const app = express();
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 let auth = require('./auth')(app);
-const cors = require('cors');
-app.use(cors());
-const passport=require('passport')
 require('./passport');
+
+//mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect( process.env.CONNECTION_URI,{ useNewUrlParser: true, useUnifiedTopology: true });
 
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
