@@ -122,7 +122,7 @@ app.post('/users',
     [
       check('Username', 'Username is required').isLength({min: 5}),
       check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-      check('Password', 'Password is required').not().isEmpty(),
+      check('password', 'password is required').not().isEmpty(),
       check('email', 'Email does not appear to be valid').isEmail()
     ], async (req, res) => {
   
@@ -133,7 +133,7 @@ app.post('/users',
         return res.status(422).json({ errors: errors.array() });
       }
   
-      let hashedPassword = Users.hashPassword(req.body.Password);
+      let hashedPassword = Users.hashPassword(req.body.password);
       await Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
         .then((user) => {
           if (user) {
@@ -143,7 +143,7 @@ app.post('/users',
             Users
               .create({
                 Username: req.body.Username,
-                Password: hashedPassword,
+                password: hashedPassword,
                 email: req.body.email,
                 Birthday: req.body.Birthday
               })
