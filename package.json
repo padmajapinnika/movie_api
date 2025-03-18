@@ -10,15 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/padmajapinnika/movie_api.git"
   },
-  "engines": {
-  "node": "14.x"
-},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/padmajapinnika/movie_api/issues"
   },
+  "engines": {
+  "node": "14.x"
+},
   "homepage": "https://github.com/padmajapinnika/movie_api#readme",
   "description": "",
   "dependencies": {
