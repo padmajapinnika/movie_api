@@ -2,8 +2,8 @@
 const express = require('express');
 const uuid = require('uuid');
 const mongoose = require('mongoose');
+
 const Models = require('./models.js');
-const bcrypt = require('bcrypt');
 const { check, validationResult } = require('express-validator');
 
 const Movies = Models.Movie;
@@ -20,6 +20,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 let auth = require('./auth')(app);
 const cors = require('cors');
 app.use(cors());
