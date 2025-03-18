@@ -12,7 +12,6 @@ const Movies = Models.Movie;
 const Users = Models.User;
 const Genres=Models.Genre;
 const Directors=Models.Director;
-
 const app = express();
 
 
@@ -24,8 +23,8 @@ let auth = require('./auth')(app);
 require('./passport');
 
 //mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect( process.env.CONNECTION_URI,{ useNewUrlParser: true, useUnifiedTopology: true });
 
+mongoose.connect(process.env.CONNECTION_URI,  { useNewUrlParser: true, useUnifiedTopology: true })
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 app.use(cors({
@@ -124,7 +123,7 @@ app.post('/users',
       check('Username', 'Username is required').isLength({min: 5}),
       check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
       check('Password', 'Password is required').not().isEmpty(),
-      check('Email', 'Email does not appear to be valid').isEmail()
+      check('email', 'Email does not appear to be valid').isEmail()
     ], async (req, res) => {
   
     // check the validation object for errors
