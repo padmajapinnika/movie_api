@@ -70,8 +70,8 @@ app.post('/users',
     [
       check('Username', 'Username is required').isLength({min: 5}),
       check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-      check('Password', 'Password is required').not().isEmpty(),
-      check('Email', 'Email does not appear to be valid').isEmail()
+      check('password', 'password is required').not().isEmpty(),
+      check('email', 'email does not appear to be valid').isEmail()
     ], async (req, res) => {
 
     // check the validation object for errors
@@ -81,7 +81,7 @@ app.post('/users',
         return res.status(422).json({ errors: errors.array() });
       }
 
-      let hashedPassword = Users.hashPassword(req.body.Password);
+      let hashedPassword = Users.hashPassword(req.body.password);
       await Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
         .then((user) => {
           if (user) {
