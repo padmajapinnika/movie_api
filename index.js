@@ -169,7 +169,10 @@ app.put("/users/:Username", passport.authenticate('jwt', { session: false }),[
 });
 
 // Add a movie to a user's favorite list
-app.post("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { session: false }), [
+    
+    check('MovieID', 'MovieID should be a valid ID').isAlphanumeric()],
+(req, res) => {
     // check validation
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -190,7 +193,9 @@ app.post("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { sess
 });
 
 // Remove a movie from a user's favorite list
-app.delete("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { session: false }), (req, res) => {
+app.delete("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { session: false }), [
+    check('MovieID', 'MovieID should be a valid ID').isAlphanumeric()  // Ensure MovieID is alphanumeric
+],(req, res) => {
     Users.findOneAndUpdate(
         { Username: req.params.Username }, // Find user by Username
         { $pull: { favoriteMovies: req.params.MovieID } }, // Remove movie ID from favoriteMovies array
