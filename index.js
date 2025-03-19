@@ -7,6 +7,8 @@ const Models = require('./models.js');
 const passport=require('passport');
 const cors = require('cors');
 const { check, validationResult } = require('express-validator');
+require('dotenv').config();
+console.log("MongoDB URI:", process.env.CONNECTION_URI); // Debugging log
 
 const Movies = Models.Movie;
 const Users = Models.User;

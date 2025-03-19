@@ -12,7 +12,7 @@ passport.use(
   new LocalStrategy(
     {
       usernameField: 'Username',
-      passwordField: 'Password',
+      passwordField: 'password',
     },
     async (username, password, callback) => {
       console.log(`${username} ${password}`);
@@ -30,7 +30,7 @@ passport.use(
         }
         console.log('finished');
         return callback(null, user);
-      })
+        })
       .catch((error) => {
         if (error) {
           console.log(error);
