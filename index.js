@@ -128,9 +128,9 @@ app.get("/movies/:title", passport.authenticate('jwt', { session: false }),[
 
 // Update user information
 app.put("/users/:Username", passport.authenticate('jwt', { session: false }),[
-    check("username", "Username is required").isLength({ min: 5 }),
+    check("Username", "Username is required").isLength({ min: 5 }),
     check(
-        "username",
+        "Username",
         "Username contains non alphanumeric characters - not allowed."
     ).isAlphanumeric(),
     check("password", "password is required").not().isEmpty(),
