@@ -58,25 +58,7 @@ app.get("/users", passport.authenticate('jwt', { session: false }), (req, res) =
         res.status(500).send("Error: " + err);
     });
 });
-app.get("/users/:Username", passport.authenticate('jwt', { session: false }),[
-    check('user', 'user should be alphanumeric').isAlphanumeric()
-], (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    Users.findOne({ Username: req.params.Username })
-        .then((user) => {
-            if (!user) {
-                return res.status(404).send("user not found");
-            }
-            res.status(200).json(user); 
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
-        });
-});
+
 //Register new user
 app.post('/users',
     // Validation logic here for request
