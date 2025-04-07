@@ -47,19 +47,54 @@ app.get('/movies',passport.authenticate('jwt', { session: false }), async (req, 
     });
 });
 
-// Return all users in JSON format
-app.get("/users", passport.authenticate('jwt', { session: false }), (req, res) => {
-    Users.find()
-    .then(function(users) {
-        res.status(201).json(users);
-    })
-    .catch(function(err) {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-    });
+
+
+// Return a movie by title
+app.get("/movies/:title", passport.authenticate('jwt', { session: false }),[
+    check('title', 'Title should be alphanumeric').isAlphanumeric()
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+    Movies.findOne({ Title: req.params.Title })
+        .then((movie) => {
+            if (!movie) {
+                return res.status(404).send("Movie not found");
+            }
+            res.status(200).json(movie);  // Return the movie data
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
 });
 
-//Register new user
+ 
+
+
+// Get a user by username
+app.get("/users/:Username", passport.authenticate('jwt', { session: false }),[
+    check('Username', 'Username should be alphanumeric').isAlphanumeric()
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+    Users.findOne({ Username: req.params.Username })
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send("user not found");
+            }
+            res.status(200).json(user); 
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
+});
+
+  //Register new user
 app.post('/users',
     // Validation logic here for request
     //you can either use a chain of methods like .not().isEmpty()
@@ -106,27 +141,6 @@ app.post('/users',
           res.status(500).send('Error: ' + error);
         });
     });
-// Return a movie by title
-app.get("/movies/:title", passport.authenticate('jwt', { session: false }),[
-    check('title', 'Title should be alphanumeric').isAlphanumeric()
-], (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    Movies.findOne({ Title: req.params.Title })
-        .then((movie) => {
-            if (!movie) {
-                return res.status(404).send("Movie not found");
-            }
-            res.status(200).json(movie);  // Return the movie data
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
-        });
-});
-
 // Update user information
 app.put("/users/:Username", passport.authenticate('jwt', { session: false }),[
     check("Username", "Username is required").isLength({ min: 5 }),
@@ -155,7 +169,7 @@ app.put("/users/:Username", passport.authenticate('jwt', { session: false }),[
                 Username: req.body.Username,
                 password: req.body.password,
                 email: req.body.email,
-                Birthday: req.body.Birthday,
+                //Birthday: req.body.Birthday,
             },
         },
         { new: true } // Return updated user document
