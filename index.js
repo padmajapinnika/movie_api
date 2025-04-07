@@ -70,7 +70,17 @@ app.get("/movies/:title", passport.authenticate('jwt', { session: false }),[
         });
 });
 
- 
+  //get all users
+  app.get("/users", passport.authenticate('jwt', { session: false }), (req, res) => {
+    Users.find()
+    .then(function(users) {
+        res.status(201).json(users);
+    })
+    .catch(function(err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+    });
+});
 
 
 // Get a user by username
