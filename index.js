@@ -6,6 +6,7 @@ const uuid = require('uuid');
 const Models = require('./models.js');
 const passport = require('passport');
 const cors = require('cors');
+
 const { check, validationResult } = require('express-validator');
 require('dotenv').config();
 
@@ -16,11 +17,25 @@ console.log("MongoDB URI:", process.env.CONNECTION_URI);
 const Movies = Models.Movie;
 const Users = Models.User;
 const app = express();
-
+let allowedOrigins = [
+    'http://localhost:1234',
+    'http://localhost:8080',
+    'https://movie-api-padma-7528be21ca05.herokuapp.com',
+    'https://padmajapinnika-1215.netlify.app'
+  ];
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    }
+    }));
 
 // Initialize authentication and passport
 let auth = require('./auth')(app);
