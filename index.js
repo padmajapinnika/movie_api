@@ -20,6 +20,7 @@ const app = express();
 let allowedOrigins = [
     'http://localhost:1234',
     'http://localhost:8080',
+    'http://localhost:4200',
     'https://movie-api-padma-7528be21ca05.herokuapp.com',
     'https://padmajapinnika-1215.netlify.app'
   ];
