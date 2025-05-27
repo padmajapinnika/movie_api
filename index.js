@@ -36,7 +36,8 @@ let allowedOrigins = [
     'http://localhost:4200',
     'https://movie-api-padma-7528be21ca05.herokuapp.com',
     'https://padmajapinnika-1215.netlify.app',
-    'https://padmajapinnika.github.io'
+    'https://padmajapinnika.github.io',
+    'https://myflix-client.vercel.app'
   ];
 // Middleware
 app.use(express.json());
